@@ -1,35 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dev Toolkit - Our Contributors</title>
+  <title>Open Source Contributors Wall — GDG on Campus HiLCoE</title>
+  <link rel="icon" href="assets/images/logo.png">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand">
+        <img class="gdg-logo" src="assets/images/logo.png" alt="GDG on Campus HiLCoE Logo" width="48" height="48">
+        <span class="topbar-title">GDG on Campus HiLCoE</span>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-event">
+          <span class="event-badge">March 14, 2026</span>
+          <span class="topbar-location">Addis Ababa, Ethiopia</span>
+        </div>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light/dark mode">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
   <header>
-    <h1>Our Amazing Contributors</h1>
-    <p>These awesome people have contributed to this project. Want to join them? 
-      <a href="https://github.com/naolyizotaw/dev-toolkit" target="_blank">Start here!</a>
-    </p>
+    <span class="event-label">Let's Dive into Open Source: Your Adventure in Teamwork</span>
+    <h1>Open Source Contributors Wall</h1>
+    <p>Add your profile and make your first open-source contribution today!</p>
+    <div id="contributor-count" class="contributor-count" hidden>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span id="contributor-number">0</span>
+      <span class="contributor-text">Contributors and counting...</span>
+    </div>
+    <a href="https://github.com/naolyizotaw/dev-toolkit" target="_blank" class="btn-start">
+      Start Here
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
   </header>
 
   <main>
+    <div class="search-wrapper">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search" class="search-input" placeholder="Search by name or skill...">
+    </div>
     <div id="contributors-grid" class="grid"></div>
     <p id="loading" class="loading">Loading contributors...</p>
+    <p id="no-results" class="empty-state" hidden>No contributors match your search.</p>
     <p id="empty-state" class="empty-state" hidden>
-      No contributors yet. Be the first one! Check the 
+      No contributors yet. Be the first one! Check the
       <a href="https://github.com/naolyizotaw/dev-toolkit/blob/main/CONTRIBUTING.md">Contributing Guide</a>.
     </p>
   </main>
 
+  <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+
   <footer>
-    <p>Made with &hearts; by the open-source community</p>
-    <p>
-      <a href="https://github.com/naol-dev/dev-toolkit" target="_blank">GitHub Repo</a>
-    </p>
+    <div class="footer-brand">
+      <img class="gdg-logo-sm" src="assets/images/logo.png" alt="GDG on Campus HiLCoE Logo" width="32" height="32">
+      <span>GDG on Campus HiLCoE School of Computer Science &amp; Technology</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/naolyizotaw/dev-toolkit" target="_blank">GitHub Repo</a>
+      <span class="footer-sep">&middot;</span>
+      <a href="https://gdg.community.dev/events/details/google-gdg-on-campus-hilcoe-school-of-computer-science-and-technology-addis-ababa-ethiopia-presents-lets-dive-into-open-source-your-adventure-in-teamwork/" target="_blank">Event Page</a>
+      <span class="footer-sep">&middot;</span>
+      <a href="https://gdg.community.dev/gdg-on-campus-hilcoe-school-of-computer-science-and-technology-addis-ababa-ethiopia/" target="_blank">GDG Chapter</a>
+    </div>
+    <p class="footer-copy">Made with &hearts; by the open-source community at HiLCoE</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

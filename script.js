@@ -10,9 +10,12 @@ async function loadContributor(filename) {
   return response.json();
 }
 
-function createCard(contributor) {
+function createCard(contributor, index) {
   const card = document.createElement("div");
   card.className = "card";
+  card.style.animationDelay = `${index * 0.1}s`;
+  card.dataset.name = (contributor.name || "").toLowerCase();
+  card.dataset.skills = (contributor.skills || []).join(" ").toLowerCase();
 
   const avatarUrl = contributor.avatar || "assets/images/placeholder.png";
 
@@ -43,7 +46,7 @@ function createCard(contributor) {
   }
 
   card.innerHTML = `
-    <img class="avatar" src="${avatarUrl}" alt="${contributor.name}'s avatar" 
+    <img class="avatar" src="${avatarUrl}" alt="${contributor.name}'s avatar"
          onerror="this.src='assets/images/placeholder.png'">
     <h2 class="name">${contributor.name}</h2>
     <p class="bio">${contributor.bio || ""}</p>
@@ -54,10 +57,59 @@ function createCard(contributor) {
   return card;
 }
 
+function fireConfetti() {
+  if (typeof confetti !== "function") return;
+
+  const duration = 1500;
+  const end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 3,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: ["#4285f4", "#ea4335", "#fbbc04", "#34a853"]
+    });
+    confetti({
+      particleCount: 3,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: ["#4285f4", "#ea4335", "#fbbc04", "#34a853"]
+    });
+
+    if (Date.now() < end) requestAnimationFrame(frame);
+  })();
+}
+
+function animateCountUp(target, element) {
+  const duration = 1000;
+  const start = performance.now();
+
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const value = Math.round(easeOutCubic(progress) * target);
+    element.textContent = value;
+
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    }
+  }
+
+  requestAnimationFrame(tick);
+}
+
 async function renderContributors() {
   const grid = document.getElementById("contributors-grid");
   const loading = document.getElementById("loading");
   const emptyState = document.getElementById("empty-state");
+  const countEl = document.getElementById("contributor-count");
 
   const contributors = [];
 
@@ -77,9 +129,82 @@ async function renderContributors() {
     return;
   }
 
-  contributors.forEach(contributor => {
-    grid.appendChild(createCard(contributor));
+  countEl.hidden = false;
+  animateCountUp(contributors.length, document.getElementById("contributor-number"));
+
+  contributors.forEach((contributor, i) => {
+    grid.appendChild(createCard(contributor, i));
+  });
+
+  setTimeout(fireConfetti, 300);
+}
+
+/* ── Search / Filter ── */
+
+function initSearch() {
+  const input = document.getElementById("search");
+  const grid = document.getElementById("contributors-grid");
+  const noResults = document.getElementById("no-results");
+
+  input.addEventListener("input", () => {
+    const query = input.value.toLowerCase().trim();
+    const cards = grid.querySelectorAll(".card");
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const matchesName = card.dataset.name.includes(query);
+      const matchesSkill = card.dataset.skills.includes(query);
+      const show = matchesName || matchesSkill;
+      card.style.display = show ? "" : "none";
+      if (show) visibleCount++;
+    });
+
+    noResults.hidden = visibleCount > 0;
   });
 }
 
-document.addEventListener("DOMContentLoaded", renderContributors);
+/* ── Dark / Light Theme Toggle ── */
+
+function initThemeToggle() {
+  const toggle = document.getElementById("theme-toggle");
+  const html = document.documentElement;
+
+  const saved = localStorage.getItem("theme");
+  if (saved) {
+    html.setAttribute("data-theme", saved);
+  }
+
+  toggle.addEventListener("click", () => {
+    const current = html.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    html.setAttribute("data-theme", next);
+    localStorage.setItem("theme", next);
+  });
+}
+
+/* ── Back to Top ── */
+
+function initBackToTop() {
+  const btn = document.getElementById("back-to-top");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 400) {
+      btn.classList.add("visible");
+    } else {
+      btn.classList.remove("visible");
+    }
+  });
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+/* ── Init ── */
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderContributors();
+  initSearch();
+  initThemeToggle();
+  initBackToTop();
+});
