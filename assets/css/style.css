@@ -550,7 +550,12 @@ footer {
   font-size: 0.85rem;
   background: var(--bg-secondary);
   position: relative;
-  transition: background-color 0.3s;
+  transition: background 0.3s;
+}
+
+[data-theme="light"] footer {
+  background: #e8f0fe;
+  border-top-color: #c8ddf8;
 }
 
 .footer-wave {
