@@ -94,6 +94,43 @@ git push origin add-YOUR-USERNAME
 
 That's it! We'll review and merge your PR.
 
+### Step 9: Sync Your Fork (After Your PR is Merged)
+
+Once your PR is merged into the original repo, your fork is now **behind**. You need to sync it so your `main` branch stays up to date for future contributions.
+
+**Option A: Sync on GitHub (easiest)**
+
+1. Go to your fork on GitHub
+2. You'll see a message: *"This branch is X commits behind..."*
+3. Click **"Sync fork"** → **"Update branch"**
+
+**Option B: Sync from the command line**
+
+First time only — add the original repo as `upstream`:
+
+```bash
+git remote add upstream https://github.com/naolyizotaw/dev-toolkit.git
+```
+
+Then every time you want to sync:
+
+```bash
+git checkout main
+git fetch upstream
+git merge upstream/main
+git push origin main
+```
+
+This pulls the latest changes from the original repo into your fork's `main` branch.
+
+**Option C: Using GitHub CLI**
+
+```bash
+gh repo sync YOUR-USERNAME/dev-toolkit
+```
+
+> **Important:** Always sync your fork **before** starting a new contribution. This avoids merge conflicts.
+
 ## Guidelines
 
 - **One contributor file per person** — don't modify other people's files
