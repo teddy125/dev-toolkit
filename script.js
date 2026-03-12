@@ -136,7 +136,16 @@ async function renderContributors() {
     grid.appendChild(createCard(contributor, i));
   });
 
+  updateFooterStats(contributors);
   setTimeout(fireConfetti, 300);
+}
+
+function updateFooterStats(contributors) {
+  const allSkills = new Set();
+  contributors.forEach(c => (c.skills || []).forEach(s => allSkills.add(s)));
+
+  animateCountUp(contributors.length, document.getElementById("stat-contributors"));
+  animateCountUp(allSkills.size, document.getElementById("stat-skills"));
 }
 
 /* ── Search / Filter ── */
